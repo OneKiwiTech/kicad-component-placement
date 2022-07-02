@@ -1,0 +1,1 @@
+from .componentplacement import plugin
