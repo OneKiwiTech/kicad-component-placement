@@ -1,5 +1,6 @@
 # Component Placement
 
+![screenshot](doc/component-placement.png)
 
 ## References
 
