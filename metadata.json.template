@@ -6,7 +6,7 @@
     "identifier": "com.github.onekiwi.kicad-component-placement",
     "type": "plugin",
     "author": {
-        "name": "mitxela",
+        "name": "OneKiwi",
         "contact": {
             "web": "https://github.com/OneKiwiTech"
         }
