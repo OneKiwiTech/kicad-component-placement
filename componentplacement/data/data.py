@@ -14,6 +14,8 @@ def get_field_data(board):
                 fields.append(key)
     fields.remove("Sheetname")
     fields.remove("Sheetfile")
+    fields.remove("ki_description")
+    fields.remove("ki_keywords")
     return fields
 
 
@@ -100,3 +102,20 @@ def create_file(board, dnp, unit, offset):
         
     f.close()
     return csv_file
+
+
+"""
+import pcbnew
+board = pcbnew.GetBoard()
+ref = board.FindFootprintByReference('C9')
+ref = board.FindFootprintByReference('C10')
+#props = ref.GetProperties()
+#ref.GetPropertiesNative().keys()
+#ref.GetPropertiesNative().values()
+#ref.GetPropertiesNative().items()
+#ref.GetPropertiesNative().items()[0][0]
+props = ref.GetPropertiesNative().items()
+prop = props[0]
+key = prop[0]
+value = prop[1]
+"""
