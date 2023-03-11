@@ -1,9 +1,9 @@
 {
     "$schema": "https://go.kicad.org/pcm/schemas/v1",
-    "name": "Component Placement",
-    "description": "Create component placement",
-    "description_full": "Create component placement",
-    "identifier": "com.github.onekiwi.kicad-component-placement",
+    "name": "Via Stitching",
+    "description": "Fill a selected copper area with a pattern of vias",
+    "description_full": "Fill a selected copper area with a pattern of vias",
+    "identifier": "vn.onekiwi.via-stitching",
     "type": "plugin",
     "author": {
         "name": "OneKiwi",
@@ -13,7 +13,7 @@
     },
     "license": "MIT",
     "resources": {
-        "homepage": "https://github.com/OneKiwiTech/kicad-component-placement"
+        "homepage": "https://github.com/OneKiwiTech/kicad-via-stitching"
     },
     "versions": [
         {
@@ -22,7 +22,7 @@
             "kicad_version": "6.0",
             "download_sha256": "SHA256",
             "download_size": DOWNLOAD_SIZE,
-            "download_url": "https://github.com/OneKiwiTech/kicad-component-placement/releases/download/VERSION/kicad-component-placement-VERSION.zip",
+            "download_url": "https://github.com/OneKiwiTech/kicad-via-stitching/releases/download/VERSION/via-stitching-VERSION.zip",
             "install_size": INSTALL_SIZE,
             "platforms": [
                 "linux",

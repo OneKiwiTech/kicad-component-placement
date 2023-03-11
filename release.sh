@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 version=$(git describe --tags --dirty)
-name=$(echo kicad-component-placement-$version.zip)
+name=$(echo via-stitching-$version.zip)
 
 echo "Building release $version"
 cp metadata.json.template metadata.json
@@ -10,10 +10,13 @@ sed -i '/download_/d' metadata.json
 sed -i '/install_size/d' metadata.json
 
 mkdir resources
-cp icon.png resources/
+cp icon/icon_64x64.png resources/
+mv resources/icon_64x64.png resources/icon.png
 
 mkdir plugins
-cp -r componentplacement/* plugins/
+cp __init__.py plugins/
+cp icon.png plugins/
+cp -r onekiwi/ plugins/
 
 zip -r $name plugins resources metadata.json
 
