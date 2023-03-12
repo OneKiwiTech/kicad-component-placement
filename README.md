@@ -1,6 +1,5 @@
-# Edit Multi Text
-![screenshot](icon/icon_256x256.png)  
-Edit reference value on layer Silkscreen and Fabrication
+# Component Placement
+![screenshot](icon/icon_256x256.png)
 
 ## GUI
 ![screenshot](doc/component-placement.png)
