@@ -38,12 +38,12 @@ class Controller:
 
     def InitGridCustom(self):
         rows = self.view.gridCustom.GetNumberRows()
-        self.view.gridCustom.DeleteRows(0, rows)
+        #self.view.gridCustom.DeleteRows(0, rows)
         self.fields.remove('<none>')
         self.view.gridCustom.AppendRows(len(self.fields))
         self.view.gridCustom.SetCornerLabelValue('Item')
         for row, field in enumerate(self.fields):
-            self.view.gridCustom.SetColSize(row, 100)
+            #self.view.gridCustom.SetColSize(row, 100)
             self.view.gridCustom.SetCellValue(row, 1, field)
             self.view.gridCustom.SetCellAlignment(row, 1, wx.ALIGN_LEFT, wx.ALIGN_TOP)
             self.view.gridCustom.SetReadOnly(row, 1)
@@ -69,7 +69,8 @@ class Controller:
             path = self.model.create_file()
             self.logger.info('Placement file: %s' %path)
         else:
-            self.logger.info('fields: %s' %fields)
+            path = self.model.create_file_custom(fields)
+            self.logger.info('Placement file custom: %s' %path)
 
     def OnClearPressed(self, event):
         self.view.textLog.SetValue('')

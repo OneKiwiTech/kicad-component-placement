@@ -150,3 +150,81 @@ class Model:
             
         f.close()
         return csv_file
+    
+    def create_file_custom(self, customs):
+        pathname = str(self.board.GetFileName())
+        dir = os.path.dirname(pathname)
+        base = os.path.basename(pathname)
+        name = os.path.splitext(base)[0]
+        name_smt = "pos_" + name + ".csv"
+        
+        csv_file = os.path.join(dir, "", name_smt)
+        
+        try:
+            # check if File exist
+            if os.path.exists(csv_file):
+                os.remove(csv_file)
+            f = open(csv_file, 'w', encoding="utf-8")
+        except IOError:
+            e = "Can't open output file for writing: "
+            print( __file__, ":", e, sys.stderr )
+            f = sys.stdout
+          
+        # page origin
+        origin = pcbnew.wxPoint(0, 0)
+        # grid origin
+        if self.offset == 1:
+            origin = self.board.GetDesignSettings().GetGridOrigin()
+        # drill origin
+        if self.offset == 2:
+            origin = self.board.GetDesignSettings().GetAuxOrigin()
+
+        #ummX = "PosX(mm)"
+        #ummY = "PosY(mm)"
+        #umilX = "PosX(mil)"
+        #umilY = "PosY(mil)"
+        IU_PER_MM = 1000000
+        IU_PER_MILS = 25400
+        
+        # Create a new csv writer object to use as the output formatter
+        out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
+
+        headers = ['Item', 'References', 'Value', 'Package', 'Layer', 'Orientation', 
+            'PosX(mm)', 'PosY(mm)', 'PosX(mil)', 'PosY(mil)', 'SMD']
+        
+        if self.dnp in customs:
+            customs.remove(self.dnp)
+        headers.extend(customs)
+        print(customs)
+
+        # Write CSV
+        out.writerow(headers)
+
+        item = 0
+        footprints = self.board.GetFootprints()
+        footprints.sort(key=lambda x: x.GetReference())
+        for footprint in footprints:
+            fields = {str(item) for item in footprint.GetPropertiesNative().keys()}
+            if 'dnp' not in fields:
+                item += 1
+                mmX = round((footprint.GetPosition().Get()[0] - origin.Get()[0])/IU_PER_MM, 4)
+                mmY = round((origin.Get()[1] - footprint.GetPosition().Get()[1])/IU_PER_MM, 4)
+                milX = round((footprint.GetPosition().Get()[0] - origin.Get()[0])/IU_PER_MILS, 4)
+                milY = round((origin.Get()[1] - footprint.GetPosition().Get()[1])/IU_PER_MILS, 4)
+                layer = "Top"
+                smd = "No"
+                if footprint.GetTypeName() == "SMD":
+                    smd = "Yes"
+                if footprint.IsFlipped():
+                    layer = "Bottom"
+                values = [item, footprint.GetReference(), footprint.GetValue(), footprint.GetFPID().GetUniStringLibItemName(),
+                    layer, footprint.GetOrientationDegrees(), mmX, mmY, milX, milY, smd]
+                for x in customs:
+                    print(x)
+                    data = footprint.GetProperties().get(x)
+                    print(data)
+                    values.append(data)
+                out.writerow(values)
+            
+        f.close()
+        return csv_file
