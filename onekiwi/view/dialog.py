@@ -9,6 +9,7 @@
 
 import wx
 import wx.xrc
+import wx.grid
 
 ###########################################################################
 ## Class ComponentPlacementDialog
@@ -56,6 +57,39 @@ class ComponentPlacementDialog ( wx.Dialog ):
 
 		bSizer10.Add( sbSizer5, 1, wx.ALL|wx.EXPAND, 5 )
 
+		sbSizer3 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Add custom fields:" ), wx.VERTICAL )
+
+		self.gridCustom = wx.grid.Grid( sbSizer3.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+
+		# Grid
+		self.gridCustom.CreateGrid( 0, 2 )
+		self.gridCustom.EnableEditing( True )
+		self.gridCustom.EnableGridLines( True )
+		self.gridCustom.EnableDragGridSize( False )
+		self.gridCustom.SetMargins( 0, 0 )
+
+		# Columns
+		self.gridCustom.AutoSizeColumns()
+		self.gridCustom.EnableDragColMove( False )
+		self.gridCustom.EnableDragColSize( True )
+		self.gridCustom.SetColLabelValue( 0, u"Add" )
+		self.gridCustom.SetColLabelValue( 1, u"Name" )
+		self.gridCustom.SetColLabelAlignment( wx.ALIGN_CENTER, wx.ALIGN_CENTER )
+
+		# Rows
+		self.gridCustom.EnableDragRowSize( False )
+		self.gridCustom.SetRowLabelSize( wx.grid.GRID_AUTOSIZE )
+		self.gridCustom.SetRowLabelAlignment( wx.ALIGN_CENTER, wx.ALIGN_CENTER )
+
+		# Label Appearance
+
+		# Cell Defaults
+		self.gridCustom.SetDefaultCellAlignment( wx.ALIGN_CENTER, wx.ALIGN_TOP )
+		sbSizer3.Add( self.gridCustom, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+		bSizer10.Add( sbSizer3, 0, wx.ALL|wx.EXPAND, 5 )
+
 		bSizer12 = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.buttonGenerate = wx.Button( self, wx.ID_ANY, u"Generate Position File", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -88,3 +122,5 @@ class ComponentPlacementDialog ( wx.Dialog ):
 
 	def __del__( self ):
 		pass
+
+

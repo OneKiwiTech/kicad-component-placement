@@ -14,10 +14,11 @@ class Controller:
         self.board = board
         self.logger = self.init_logger(self.view.textLog)
         self.model = Model(self.board, self.logger)
-        fields = self.model.get_field_data()
-        self.view.choiceDnp.Append(fields)
+        self.fields = self.model.get_field_data()
+        self.view.choiceDnp.Append(self.fields)
         self.view.choiceDnp.SetSelection(0)
         self.view.choiceDnp.Disable()
+        self.InitGridCustom()
         self.logger.info('init done')
 
         # Connect Events
@@ -27,12 +28,26 @@ class Controller:
         self.view.radioDefault.Bind(wx.EVT_RADIOBUTTON, self.OnDefaultChange)
         self.view.radioOther.Bind(wx.EVT_RADIOBUTTON, self.OnOtherChange)
         self.view.choiceDnp.Bind(wx.EVT_CHOICE, self.OnDnpChange)
+        self.view.gridCustom.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnGridCellClicked)
 
     def Show(self):
         self.view.Show()
     
     def Close(self):
         self.view.Destroy()
+
+    def InitGridCustom(self):
+        rows = self.view.gridCustom.GetNumberRows()
+        self.view.gridCustom.DeleteRows(0, rows)
+        self.view.gridCustom.AppendRows(len(self.fields))
+        self.view.gridCustom.SetCornerLabelValue('Item')
+        for row, field in enumerate(self.fields):
+            self.view.gridCustom.SetColSize(row, 100)
+            self.view.gridCustom.SetCellValue(row, 1, field)
+            self.view.gridCustom.SetCellAlignment(row, 1, wx.ALIGN_LEFT, wx.ALIGN_TOP)
+            self.view.gridCustom.SetReadOnly(row, 1)
+            self.view.gridCustom.SetCellValue(row, 0, "0")
+            self.view.gridCustom.SetCellRenderer(row, 0, wx.grid.GridCellBoolRenderer())
 
     def OnGeneratePressed(self, event):
         self.logger.info('OnGeneratePressed')
@@ -69,6 +84,27 @@ class Controller:
     
     def OnDnpChange(self, event):
         self.logger.info('OnDnpChange')
+    
+    def OnGridCellClicked(self, event):
+        row = event.GetRow()
+        col = event.GetCol() # col = -1
+        if col == 0:
+            self.view.gridCustom.SetCellValue.SetCellValue(row, 0, "1")
+            val = self.view.gridCustom.GetCellValue(event.Row, event.Col)
+            #val = "" if val else "1"
+            self.logger.info('click: %s' %val)
+            #self.view.gridCustom.SetCellValue(event.Row, event.Col, val)
+            if val == "" or val == "0":
+                self.logger.info('aaa')
+                self.view.gridCustom.SetCellValue.SetCellValue(event.Row, 0, "1")
+                self.view.gridCustom.SetCellValue.ForceRefresh()
+            if val == "1":
+                self.logger.info('bb')
+                self.view.gridCustom.SetCellValue.SetCellValue(event.Row, 0, "0")
+                self.view.gridCustom.SetCellValue.ForceRefresh()
+        #value = str(row) + ' ' + str(col)
+        #value = str(row) + ' ' + str(col)
+        #self.logger.info('click: %s' %value)
 
     def init_logger(self, texlog):
         root = logging.getLogger()
