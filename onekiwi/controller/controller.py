@@ -39,6 +39,7 @@ class Controller:
     def InitGridCustom(self):
         rows = self.view.gridCustom.GetNumberRows()
         self.view.gridCustom.DeleteRows(0, rows)
+        self.fields.remove('<none>')
         self.view.gridCustom.AppendRows(len(self.fields))
         self.view.gridCustom.SetCornerLabelValue('Item')
         for row, field in enumerate(self.fields):
@@ -48,14 +49,27 @@ class Controller:
             self.view.gridCustom.SetReadOnly(row, 1)
             self.view.gridCustom.SetCellValue(row, 0, "0")
             self.view.gridCustom.SetCellRenderer(row, 0, wx.grid.GridCellBoolRenderer())
+    
+    def GetCheckedFields(self):
+        results = []
+        for row in range(self.view.gridCustom.NumberRows):
+            val = self.view.gridCustom.GetCellValue(row, 0)
+            if val == "1":
+                temp = self.view.gridCustom.GetCellValue(row, 1)
+                results.append(temp)
+        return results
 
     def OnGeneratePressed(self, event):
         self.logger.info('OnGeneratePressed')
         if self.model.default == 0:
             index = self.view.choiceDnp.GetSelection()
             self.model.dnp = str(self.view.choiceDnp.GetString(index))
-        path = self.model.create_file()
-        self.logger.info('"Placement file: %s' %path)
+        fields= self.GetCheckedFields()
+        if len(fields) == 0:
+            path = self.model.create_file()
+            self.logger.info('Placement file: %s' %path)
+        else:
+            self.logger.info('fields: %s' %fields)
 
     def OnClearPressed(self, event):
         self.view.textLog.SetValue('')
@@ -91,12 +105,9 @@ class Controller:
         if col == 0:
             val = self.view.gridCustom.GetCellValue(event.Row, event.Col)
             #val = "" if val else "1"
-            self.logger.info('click: %s' %val)
             if val == "" or val == "0":
-                self.logger.info('aaa')
                 self.view.gridCustom.SetCellValue(event.Row, 0, "1")
             if val == "1":
-                self.logger.info('bb')
                 self.view.gridCustom.SetCellValue(event.Row, 0, "0")
         #value = str(row) + ' ' + str(col)
         #value = str(row) + ' ' + str(col)
