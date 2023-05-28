@@ -89,19 +89,15 @@ class Controller:
         row = event.GetRow()
         col = event.GetCol() # col = -1
         if col == 0:
-            self.view.gridCustom.SetCellValue.SetCellValue(row, 0, "1")
             val = self.view.gridCustom.GetCellValue(event.Row, event.Col)
             #val = "" if val else "1"
             self.logger.info('click: %s' %val)
-            #self.view.gridCustom.SetCellValue(event.Row, event.Col, val)
             if val == "" or val == "0":
                 self.logger.info('aaa')
-                self.view.gridCustom.SetCellValue.SetCellValue(event.Row, 0, "1")
-                self.view.gridCustom.SetCellValue.ForceRefresh()
+                self.view.gridCustom.SetCellValue(event.Row, 0, "1")
             if val == "1":
                 self.logger.info('bb')
-                self.view.gridCustom.SetCellValue.SetCellValue(event.Row, 0, "0")
-                self.view.gridCustom.SetCellValue.ForceRefresh()
+                self.view.gridCustom.SetCellValue(event.Row, 0, "0")
         #value = str(row) + ' ' + str(col)
         #value = str(row) + ' ' + str(col)
         #self.logger.info('click: %s' %value)
