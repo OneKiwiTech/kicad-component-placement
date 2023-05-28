@@ -42,14 +42,30 @@ class Controller:
         self.fields.remove('<none>')
         self.view.gridCustom.AppendRows(len(self.fields))
         self.view.gridCustom.SetCornerLabelValue('Item')
+        
         for row, field in enumerate(self.fields):
-            #self.view.gridCustom.SetColSize(row, 100)
             self.view.gridCustom.SetCellValue(row, 1, field)
             self.view.gridCustom.SetCellAlignment(row, 1, wx.ALIGN_LEFT, wx.ALIGN_TOP)
             self.view.gridCustom.SetReadOnly(row, 1)
+            self.view.gridCustom.SetCellAlignment(row, 0, wx.ALIGN_CENTER, wx.ALIGN_TOP)
             self.view.gridCustom.SetCellValue(row, 0, "0")
             self.view.gridCustom.SetCellRenderer(row, 0, wx.grid.GridCellBoolRenderer())
-    
+
+        for i in range(2):
+            box = self.view.GetTextExtent(self.view.gridCustom.GetColLabelValue(i))
+            if hasattr(box, "x"):
+                width = box.x
+            else:
+                width = box[0]
+            if i == 0:
+                width = int(width * 2)
+                self.view.gridCustom.SetColMinimalWidth(i, width)
+                self.view.gridCustom.SetColSize(i, width)
+            else:
+                width = int(width * 4)
+                self.view.gridCustom.SetColMinimalWidth(i, width)
+                self.view.gridCustom.SetColSize(i, width)
+
     def GetCheckedFields(self):
         results = []
         for row in range(self.view.gridCustom.NumberRows):
