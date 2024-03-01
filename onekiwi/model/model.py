@@ -16,7 +16,13 @@ class Model:
         fields = ['<none>']
         for footprint in self.board.GetFootprints():
             ref = footprint.GetReference()
-            props = footprint.GetProperties()
+            props = {}
+            # kicad v7
+            if hasattr(footprint, "GetProperties"):
+                props = footprint.GetProperties()
+             # kicad v8
+            if hasattr(footprint, "GetFieldsText"):
+                props = footprint.GetFieldsText()
             for key in props.keys():
                 if key not in fields:
                     fields.append(key)
@@ -90,8 +96,22 @@ class Model:
         footprints.sort(key=lambda x: x.GetReference())
         if self.default == 1:
             for footprint in footprints:
-                category = footprint.GetProperties().get('Category')
-                fields = {str(item) for item in footprint.GetPropertiesNative().keys()}
+                category = ''
+                if hasattr(footprint, "GetProperties"):
+                    category = footprint.GetProperties().get('Category')
+                else:
+                    try:
+                        category = footprint.GetFieldText('Category')
+                    except:
+                        category = ''
+
+                # kicad v7
+                if hasattr(footprint, "GetPropertiesNative"):
+                    fields = {str(item) for item in footprint.GetPropertiesNative().keys()}
+                # kicad v8
+                else:
+                    fields = {str(item) for item in footprint.GetFieldsText().keys()}
+                    
                 if 'dnp' not in fields and category != 'PCB':
                     item += 1
                     mmX = round((footprint.GetPosition().Get()[0] - origin.Get()[0])/IU_PER_MM, 4)
@@ -119,7 +139,13 @@ class Model:
                     ])
         else:
             for footprint in footprints:
-                props = footprint.GetProperties()
+                props = {}
+                # kicad v7
+                if hasattr(footprint, "GetProperties"):
+                    props = footprint.GetProperties()
+                # kicad v8
+                else:
+                    props = footprint.GetFieldsText()
                 if props.get(self.dnp) == None or props.get(self.dnp) == "":
                     #logging.debug('%s' % footprint.GetValue())
                     #logging.debug('\t%s' % props.get(dnp))
@@ -204,7 +230,12 @@ class Model:
         footprints = self.board.GetFootprints()
         footprints.sort(key=lambda x: x.GetReference())
         for footprint in footprints:
-            fields = {str(item) for item in footprint.GetPropertiesNative().keys()}
+            # kicad v7
+            if hasattr(footprint, "GetPropertiesNative"):
+                fields = {str(item) for item in footprint.GetPropertiesNative().keys()}
+            # kicad v8
+            else:
+                fields = {str(item) for item in footprint.GetFieldsText().keys()}
             if 'dnp' not in fields:
                 item += 1
                 mmX = round((footprint.GetPosition().Get()[0] - origin.Get()[0])/IU_PER_MM, 4)
