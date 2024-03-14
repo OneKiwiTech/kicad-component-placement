@@ -251,9 +251,14 @@ class Model:
                 values = [item, footprint.GetReference(), footprint.GetValue(), footprint.GetFPID().GetUniStringLibItemName(),
                     layer, footprint.GetOrientationDegrees(), mmX, mmY, milX, milY, smd]
                 for x in customs:
-                    print(x)
-                    data = footprint.GetProperties().get(x)
-                    print(data)
+                    data = ''
+                    if hasattr(footprint, "GetProperties"):
+                        data = footprint.GetProperties().get(x)
+                    else:
+                        try:
+                            data = footprint.GetFieldText(x)
+                        except:
+                            data = ''
                     values.append(data)
                 out.writerow(values)
             

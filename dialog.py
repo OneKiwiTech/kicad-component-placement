@@ -1,5 +1,10 @@
+try:
+    import pcbnew
+except:
+    import sys
+    sys.path.insert(0,"/usr/lib/python3.8/site-packages/")
+    import pcbnew
 import wx
-import pcbnew
 from onekiwi.controller.controller import Controller
 
 filename = '/home/vanson/working/kicad/battery/bms-single-cell/bms-single-cell.kicad_pcb'

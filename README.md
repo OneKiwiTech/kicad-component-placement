@@ -1,5 +1,11 @@
-# Component Placement
-![screenshot](icon/icon_256x256.png)
+# ![icon](onekiwi/icon.png) Component Placement
+
+##
+[![Donate](https://img.shields.io/badge/PayPal-Buy%20Me%20a%20Coffee-brightgreen?style=flat&logo=PayPal)](https://paypal.me/phutruong811)
+
+##
+<img src="https://img.shields.io/badge/KiCad-v7-brightgreen?style=flat&logo=KiCad">
+<img src="https://img.shields.io/badge/KiCad-v8-brightgreen?style=flat&logo=KiCad">
 
 ## GUI
 ![screenshot](doc/component-placement.png)
