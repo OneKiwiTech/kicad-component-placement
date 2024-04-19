@@ -59,7 +59,13 @@ class ComponentPlacementDialog ( wx.Dialog ):
 
 		sbSizer3 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Add custom fields:" ), wx.VERTICAL )
 
-		self.gridCustom = wx.grid.Grid( sbSizer3.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_scrolledWindow1 = wx.ScrolledWindow( sbSizer3.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.VSCROLL )
+		self.m_scrolledWindow1.SetScrollRate( 5, 5 )
+		self.m_scrolledWindow1.SetMinSize( wx.Size( -1,200 ) )
+
+		bSizer5 = wx.BoxSizer( wx.VERTICAL )
+
+		self.gridCustom = wx.grid.Grid( self.m_scrolledWindow1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 
 		# Grid
 		self.gridCustom.CreateGrid( 0, 2 )
@@ -85,7 +91,13 @@ class ComponentPlacementDialog ( wx.Dialog ):
 
 		# Cell Defaults
 		self.gridCustom.SetDefaultCellAlignment( wx.ALIGN_CENTER, wx.ALIGN_TOP )
-		sbSizer3.Add( self.gridCustom, 0, wx.ALL|wx.EXPAND, 5 )
+		bSizer5.Add( self.gridCustom, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+		self.m_scrolledWindow1.SetSizer( bSizer5 )
+		self.m_scrolledWindow1.Layout()
+		bSizer5.Fit( self.m_scrolledWindow1 )
+		sbSizer3.Add( self.m_scrolledWindow1, 0, wx.EXPAND |wx.ALL, 5 )
 
 
 		bSizer10.Add( sbSizer3, 0, wx.ALL|wx.EXPAND, 5 )
@@ -120,7 +132,15 @@ class ComponentPlacementDialog ( wx.Dialog ):
 
 		self.Centre( wx.BOTH )
 
+		# Connect Events
+		self.gridCustom.Bind( wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnGridCustom )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def OnGridCustom( self, event ):
+		event.Skip()
 
 
