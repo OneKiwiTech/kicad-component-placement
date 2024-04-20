@@ -26,7 +26,7 @@ class ComponentPlacementDialog ( wx.Dialog ):
 
 		bSizer10 = wx.BoxSizer( wx.VERTICAL )
 
-		radioOriginChoices = [ u"Gird Origin", u"Drill Origin", u"Page Origin" ]
+		radioOriginChoices = [ u"Grid Origin", u"Drill Origin", u"Page Origin" ]
 		self.radioOrigin = wx.RadioBox( self, wx.ID_ANY, u"Origin", wx.DefaultPosition, wx.DefaultSize, radioOriginChoices, 1, wx.RA_SPECIFY_ROWS )
 		self.radioOrigin.SetSelection( 0 )
 		bSizer10.Add( self.radioOrigin, 0, wx.ALL|wx.EXPAND, 5 )
